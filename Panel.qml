@@ -143,6 +143,10 @@ Panel {
     if (!systemProc.running) systemProc.running = true
   }
 
+  function refreshChargingProtect() {
+    if (!chargeProtectProc.running) chargeProtectProc.running = true
+  }
+
   function setChargingProtect(enabled) {
     if (chargeProtectActionRunning || !batteryPresent) return
     chargeProtectActionRunning = true
@@ -209,7 +213,7 @@ Panel {
       }
 
       refresh()
-      if (!chargeProtectProc.running) chargeProtectProc.running = true
+      refreshChargingProtect()
       var idx = profiles.indexOf(activeProfile)
       profileIndex = idx >= 0 ? idx : 0
       cursorActive = false
@@ -264,7 +268,17 @@ Panel {
     onExited: {
       root.chargeProtectActionRunning = false
       root.refresh()
+      chargeProtectRefreshTimer.restart()
     }
+  }
+
+  // UPower applies the threshold asynchronously. Re-read once after the
+  // action completes so the open panel reflects the new limit immediately.
+  Timer {
+    id: chargeProtectRefreshTimer
+    interval: 500
+    repeat: false
+    onTriggered: root.refreshChargingProtect()
   }
 
   Timer { interval: 5000; running: root.opened; repeat: true; onTriggered: root.refresh() }
