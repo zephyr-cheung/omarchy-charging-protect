@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.zephyr-cheung.charging-protect",
+  "name": "Charging Protect",
+  "version": "1.0.0",
+  "author": "ZephyrCheung",
+  "description": "Omarchy power panel with an Asahi charging-protection switch fixed at 80%.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Charging Protect",
+    "description": "Battery, power profile, and charging protection",
+    "category": "System",
+    "allowMultiple": false
+  },
+  "omarchy": {
+    "clonedFrom": "omarchy.power"
+  }
+}
